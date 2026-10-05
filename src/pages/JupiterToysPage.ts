@@ -133,7 +133,6 @@ export default class JupiterPage {
     await this.addToys("Valentine Bear", 3);
     await cart.first().click();
     await this.page.waitForLoadState("domcontentloaded");
-    await this.page.waitForTimeout(3000);
   }
 
   async addToys(productName: string, quantity: number) {
