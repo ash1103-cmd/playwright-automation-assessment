@@ -23,7 +23,7 @@ test.describe("Cart Product Price and Subtotal Validation", async () => {
       await toysPage.verifyProductPrice();
     });
 
-    await test.step("Validate total price in the checkout", async () => {
+    await test.step("Validate total price", async () => {
       await toysPage.verifyTotalPrice();
     });
   });
