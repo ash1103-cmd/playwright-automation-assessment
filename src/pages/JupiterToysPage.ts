@@ -119,7 +119,7 @@ export default class JupiterPage {
     ).toBeVisible({ timeout: 50000 });
   }
 
-  async addToysToCart() {
+  async addToysToCart(toys: { name: string; quantity: number }[]) {
     const startShopping = this.jupierPageUIElementsMap.get(
       UILabel.StartShopping,
     );
@@ -128,9 +128,9 @@ export default class JupiterPage {
     await startShopping.first().click();
     await this.page.waitForLoadState("domcontentloaded");
 
-    await this.addToys("Stuffed Frog", 2);
-    await this.addToys("Fluffy Bunny", 5);
-    await this.addToys("Valentine Bear", 3);
+    for (const toy of toys) {
+      await this.addToys(toy.name, toy.quantity);
+    }
     await cart.first().click();
     await this.page.waitForLoadState("domcontentloaded");
   }
@@ -145,10 +145,12 @@ export default class JupiterPage {
     }
   }
 
-  async verifySubTotalForEachproduct() {
-    await this.verifyProductSubTotal("Stuffed Frog", "$21.98");
-    await this.verifyProductSubTotal("Fluffy Bunny", "$49.95");
-    await this.verifyProductSubTotal("Valentine Bear", "$44.97");
+  async verifySubTotalForEachproduct(
+    toys: { name: string; expectedSubtotal: string }[],
+  ) {
+    for (const toy of toys) {
+      await this.verifyProductSubTotal(toy.name, toy.expectedSubtotal);
+    }
   }
 
   async verifyProductSubTotal(productName: string, expectedSubtotal: string) {
@@ -158,10 +160,10 @@ export default class JupiterPage {
     await expect(row.locator("td").nth(3)).toHaveText(expectedSubtotal);
   }
 
-  async verifyProductPrice() {
-    await this.verifyEachProductPrice("Stuffed Frog", "$10.99");
-    await this.verifyEachProductPrice("Fluffy Bunny", "$9.99");
-    await this.verifyEachProductPrice("Valentine Bear", "$14.99");
+  async verifyProductPrice(toys: { name: string; expectedPrice: string }[]) {
+    for (const toy of toys) {
+      await this.verifyEachProductPrice(toy.name, toy.expectedPrice);
+    }
   }
 
   async verifyEachProductPrice(productName: string, expectedSubtotal: string) {
@@ -171,8 +173,8 @@ export default class JupiterPage {
     await expect(row.locator("td").nth(1)).toHaveText(expectedSubtotal);
   }
 
-  async verifyTotalPrice() {
-    await expect(this.page.getByText("Total: 116.9")).toBeVisible();
+  async verifyTotalPrice(totalPrice: string) {
+    await expect(this.page.getByText(totalPrice)).toBeVisible();
     console.log("Validation is successful");
   }
 }

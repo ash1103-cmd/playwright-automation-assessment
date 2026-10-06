@@ -2,9 +2,7 @@ import { test } from "@playwright/test";
 import JupiterToyPage from "../pages/JupiterToysPage";
 
 test.describe("Contact Us Form Validation", async () => {
-  test("Contact Form Validation", async ({
-    page,
-  }) => {
+  test("Contact Form Validation", async ({ page }) => {
     const toysPage = new JupiterToyPage(page);
 
     await test.step("Launch Application", async () => {
